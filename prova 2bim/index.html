@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gerador de Números Primos</title>
+  <script>
+    function isPrime(number) {
+      if (number <= 1) {
+        return false;
+      }
+      for (let i = 2; i * i <= number; i++) {
+        if (number % i === 0) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function generatePrimes() {
+      const startNumber = parseInt(document.getElementById("startNumber").value);
+      const endNumber = parseInt(document.getElementById("endNumber").value);
+
+      if (isNaN(startNumber) || isNaN(endNumber) || startNumber > endNumber) {
+        alert("Por favor, insira números válidos e verifique se o número inicial é menor ou igual ao número final.");
+        return;
+      }
+
+      const resultContainer = document.getElementById("result");
+      resultContainer.innerHTML = "";
+
+      for (let number = startNumber; number <= endNumber; number++) {
+        if (isPrime(number)) {
+          resultContainer.innerHTML += number + "<br>";
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>Gerador de Números Primos</h1>
+  <label for="startNumber">Número inicial:1</label>
+  <input type="number" id="startNumber">
+  <label for="endNumber">Número final:1000</label>
+  <input type="number" id="endNumber">
+  <button onclick="generatePrimes()">Gerar Primos</button>
+  <h2>Números Primos Gerados:</h2>
+  <div id="result"></div>
+</body>
+</html>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-br" lang="pt-br">
+  <head>
+    <title>Gerador de senhas</title>
+    <meta name="author" content="Lucas | lucas_developer@tutamail.com" />
+
+    <script type="text/javascript">
+     
+      // fun��o dec2hex: converte n�meros decimais em n�meros hexadecimais 
+      function dec2hex(numero) {
+        var base = 16;
+        var digito = new Array();
+        var i = 0;
+
+        while (numero != 0) {
+          i++;
+          digito[i] = numero % base;
+          numero = Math.floor(numero / base);
+        }
+        value = "";
+        while (i >= 1)  {
+          switch (digito[i]) {
+            case 10: { value += "A"; break }
+            case 11: { value += "B"; break }
+            case 12: { value += "C"; break }
+            case 13: { value += "D"; break }
+            case 14: { value += "E"; break }
+            case 15: { value += "F"; break }
+            default: { value += digito[i]; break }
+          }
+          i--;
+        }
+        return value;
+      }
+
+      function GerarSenha() {
+        document.forms[0].senha.value = "";
+        tamanho = document.forms[0].digitos.value;
+
+        // validar o campo *d�gitos*
+        if (tamanho < 1 || isNaN(tamanho)) {
+          alert("Escolha um valor num�rico v�lido para esse campo");
+          document.forms[0].digitos.focus();
+          document.forms[0].digitos.select();
+          return;
+        }
+
+        // ajusta o tamanho (em pixels) do campo de acordo com o n�mero de d�gitos
+        document.forms[0].senha.style.width = (tamanho * 9) + "px";
+
+        // c�digos ASCII decimais
+        min = 32;
+        max = 126;
+
+        for (i = 1; i <= tamanho; i++) {
+          caracter = min + Math.floor((Math.random() * (max - min)));  // 32 a 126
+          caracter = "%" + dec2hex(caracter);
+          caracter = unescape(caracter);
+          document.forms[0].senha.value += caracter;
+          document.getElementById("aguarde").innerHTML = "aguarde...";
+        }
+        document.getElementById("aguarde").innerHTML = "";
+      }
+      //-->
+    </script>
+
+    <style type="text/css">
+      <!--
+      * {font: 11px Verdana}
+      .campo1 {width: 180px}
+      .campo2 {width: 40px}
+      .campo1, .campo2 {border: solid 1px #CCC}
+      .botao {border: solid 1px #BBB; background-color: #EEE; cursor: pointer}
+      #aguarde {font-style: italic}
+      -->
+    </style>
+  </head>
+
+  <body>
+    <form action="#" onsubmit="GerarSenha(); return false">
+      Senha: <input type="text" name="senha" size="30" class="campo1" readonly="readonly" />&nbsp;&nbsp;
+      <input type="submit" value="Gerar senha" class="botao" /><br /><br />
+      D�gitos: <input type="text" value="8" name="digitos" size="3" class="campo2" maxlength="2" /> 
+    </form><br />
+    <div id="aguarde"></div> 
+  </body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="text/javascript"></script>
+
+
+	<title>Calculadora Fatorial</title>
+	<link href="style.css" rel="stylesheet" />
+</head>
+
+<body>
+	<main class="calculadora">
+		<h2>Calculadora Fatorial</h2>
+		<form class="form-fatorial" id="form-fatorial">
+			<label for="valor">Digite um número</label>
+			<input name="valor" id="valor" type="number" placeholder="Digite um número fatorial" />
+			<button>Calcular</button>
+		</form>
+	</main>
+	<script>
+		const message = document.querySelector('#form-fatorial label');
+		const valorDigitado = document.querySelector('#valor');
+		const formFatorial = document.querySelector('#form-fatorial');
+
+		formFatorial.addEventListener('submit', function (event) {
+			event.preventDefault();
+			const numeroFatorial = parseInt(valorDigitado.value);
+			const resultadoFatorial = gerarFatorial(numeroFatorial);
+
+			message.textContent = resultadoFatorial.message;
+
+			try {
+				document.querySelectorAll('.sucesso, .erro')
+					.forEach((element) => {
+						element.remove()
+					})
+			} catch (e) { }
+
+			this.insertAdjacentHTML('afterend', `
+<div class="${resultadoFatorial.status}">${resultadoFatorial.resultado}</div>
+`);
+		})
+
+		function gerarFatorial(num) {
+			let msgFatorial = '';
+			let fatorial = 1;
+
+			for (let i = 1; i <= num; i++) {
+
+				fatorial *= i;
+
+				if (fatorial == Infinity) {
+					return {
+						message: 'Ultrapassou o limite suportado pelo navegador.',
+						resultado: null,
+						status: 'erro'
+					}
+				}
+
+				if (i == num) {
+					msgFatorial += i + '!'
+					return {
+						message: `Fatorial:  ${fatorial}`,
+						resultado: msgFatorial,
+						status: 'sucesso'
+					}
+				}
+
+				msgFatorial += i + '! x ';
+
+			}
+
+			return {
+				message: 'Digite algum número maior que 0',
+				resultado: null,
+				status: 'erro'
+			}
+
+		}
+	</script>
+
+
+	</main>
+</body>
+
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verificar Quadrado Perfeito</title>
+  <script>
+    function verificarQuadradoPerfeito() {
+      var numero = parseInt(document.getElementById("numero").value);
+      var raiz = Math.floor(Math.sqrt(numero));
+
+      if (raiz * raiz === numero) {
+        document.getElementById("resultado").innerHTML = "É um quadrado perfeito!";
+      } else {
+        document.getElementById("resultado").innerHTML = "Não é um quadrado perfeito!";
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>Verificar Quadrado Perfeito</h1>
+  <label for="numero">Digite um número:</label>
+  <input type="number" id="numero" required>
+  <button onclick="verificarQuadradoPerfeito()">Verificar</button>
+  <p id="resultado"></p>
+</body>
+</html>
